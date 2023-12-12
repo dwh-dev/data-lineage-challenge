@@ -35,19 +35,25 @@ CREATE VIEW V1 AS
 ;
 
 CREATE VIEW V2 AS
+  SELECT identifier($table_var1).*, identifier($table_var2).* 
+  FROM
+    identifier($table_var1), identifier($table_var2)
+;
+
+CREATE VIEW V3 AS
   SELECT *
   FROM
     TABLE(identifier($tablefunction)())
 ;
 
 -- Column Identifier
-CREATE VIEW V3 AS
+CREATE VIEW V4 AS
   SELECT identifier('DEMO_DB.SCH1.T1.V1'):json_prop as prop 
   FROM 
     DEMO_DB.SCH1.T1
 ;
 
-CREATE VIEW V4 AS
+CREATE VIEW V5 AS
   with t(x) as (
     SELECT i1 FROM T1
   )
@@ -56,20 +62,20 @@ CREATE VIEW V4 AS
 ;
 
 -- Table Literal
-CREATE VIEW V5 AS
+CREATE VIEW V6 AS
   SELECT * 
   FROM
     table('t1')
 ;
 
-CREATE VIEW V6 AS
+CREATE VIEW V7 AS
   SELECT *
   FROM
     table($$DEMO_DB."SCH1"."T1"$$)
 ;
 
 -- Double-Dot Notation
-CREATE VIEW V7 AS
+CREATE VIEW V8 AS
   SELECT * 
   FROM
     DEMO_DB..T3

@@ -68,14 +68,14 @@ CREATE VIEW V1 AS
 ;
 
 -- Column Identifier
-CREATE VIEW V3 AS
+CREATE VIEW V4 AS
   SELECT identifier('DEMO_DB.SCH1.T1.V1'):json_prop as prop 
   FROM 
     DEMO_DB.SCH1.T1
 ;
 
 -- Double-Dot Notation
-CREATE VIEW V7 AS
+CREATE VIEW V8 AS
   SELECT * 
   FROM
     DEMO_DB..T3
