@@ -23,11 +23,16 @@ The repository will be updated, stay tuned!
 ## Snowflake SQL Syntax and Behavior
 - [Identifiers](#identifiers)
 - [Default and Virtual Columns](#default-and-virtual-columns)
+- Scalar Functions from PUBLIC schema
+- CTE name equals existing object
+- Function overloading
 
 ## Dwh.dev Features
 - [Navigation](#navigation)
 - [Join and Where](#join-and-where)
-
+- Strong and Weak sources
+- Fancy SQL Highlight
+- Argument forwarding
 
 # Snowflake SQL Syntax and Behavior
 ## Identifiers
