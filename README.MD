@@ -22,9 +22,11 @@ The repository will be updated, stay tuned!
 
 ## Snowflake SQL Syntax and Behavior
 - [Identifiers](#identifiers)
+- [Default and Virtaul Columns](#default-and-virtaul-columns)
 
 ## Dwh.dev Features
 - [Navigation](#navigation)
+- [Join and Where](#join-and-where)
 
 
 # Snowflake SQL Syntax and Behavior
@@ -100,6 +102,47 @@ Here is the **[Dwh.dev](https://dwh.dev)** result:
 [<img src="./snowflake/1.identifiers/media/1.identifiers.2.jpg" alt="dwh.dev identifiers #2" height=400/>](./snowflake/1.identifiers/media/1.identifiers.2.jpg)
 
 
+## Default and Virtaul Columns
+**Default and Virtual Columns** also contain information about data lineage. And as usual, nobody pays attention to it :)
+
+```sql
+-- default value
+CREATE TABLE t1 (
+  id1 int,
+  id2 int default (id1 +1)
+);
+
+CREATE VIEW v1 AS
+  SELECT *
+  FROM t1
+;
+```
+
+If during data transformations, only the id1 column is inserted into the **T1** table, the lineage information will be lost.
+
+At **[Dwh.dev](https://dwh.dev)**, we display it like this:
+
+[<img src="./dwh/media/default-virtual.1.png" alt="dwh.dev default columns"/>](./dwh/media/default-virtual.1.png)
+
+With **Virtual columns**, an even more precarious situation arises. It's impossible to insert data into a virtual column, and they will ALWAYS depend on other columns in the table.
+```sql
+-- virtual column
+CREATE TABLE T2 (
+  A INT,
+  B INT,
+  C INT,
+  D INT AS (CASE WHEN A>0 THEN B ELSE C END)
+);
+
+CREATE VIEW v2 AS
+  SELECT *
+  FROM t2
+;
+```
+At **[Dwh.dev](https://dwh.dev)**, we display it like this:
+[<img src="./dwh/media/default-virtual.2.png" alt="dwh.dev virtual columns"/>](./dwh/media/default-virtual.2.png)
+
+
 # Dwh.dev Features
 ## Navigation
 
@@ -144,3 +187,35 @@ Both of these modes also work at the column level:
 [<img src="./dwh/media/c2c.1.png" alt="dwh.dev navigation #3 - c2c #1"/>](./dwh/media/c2c.1.png)
 
 [<img src="./dwh/media/c2c.2.png" alt="dwh.dev navigation #3 - c2c #2"/>](./dwh/media/c2c.2.png)
+
+
+## Join and Where
+
+Typically, data lineage tools provide information about the immediate movement of data within the database:
+
+```sql
+CREATE VIEW v1
+AS 
+  SELECT c1
+  FROM t1
+```
+Data from the column **t1.c1** flows into **v1.c1**:
+
+[<img src="./dwh/media/jw.1.png" alt="dwh.dev join and where #1"/>](./dwh/media/jw.1.png)
+
+However, this data might be insufficient when it comes to refactoring. For instance, when certain columns aren't involved in the data movement but are only involved in **JOIN** or **WHERE** clauses:
+
+```sql
+CREATE VIEW v2
+AS 
+  SELECT c1
+  FROM t1
+    JOIN t2 ON t1.id = t2.parent_id
+  WHERE 
+    t1.c2 > t2.f2
+```
+
+Usually, data lineage tools won't provide information about columns **t1.id, t1.c2, t2.parent_id, t2.f2**, but at **[Dwh.dev](https://dwh.dev)**, we've made them visible!
+
+[<img src="./dwh/media/jw.2.png" alt="dwh.dev join and where #2"/>](./dwh/media/jw.2.png)
+
