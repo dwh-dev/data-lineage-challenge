@@ -20,7 +20,15 @@ We'll also tell you about the functionality of **[Dwh.dev](https://dwh.dev)**, w
 
 The repository will be updated, stay tuned!
 
-# Identifiers
+## Snowflake SQL Syntax and Behavior
+- [Identifiers](#identifiers)
+
+## Dwh.dev Features
+- [Navigation](#navigation)
+
+
+# Snowflake SQL Syntax and Behavior
+## Identifiers
 
 ### Basic Syntax
 **Snowflake** provides an extensive toolkit for working with object and column identifiers. Let's start with the basics: identifiers with and without quotes ([documentation](https://docs.snowflake.com/en/sql-reference/identifiers-syntax))
@@ -90,3 +98,49 @@ Here is the **[Dwh.dev](https://dwh.dev)** result:
 
 
 [<img src="./snowflake/1.identifiers/media/1.identifiers.2.jpg" alt="dwh.dev identifiers #2" height=400/>](./snowflake/1.identifiers/media/1.identifiers.2.jpg)
+
+
+# Dwh.dev Features
+## Navigation
+
+The commonly accepted navigation standard for Lineage is "expanding" each subsequent level on demand. This involves requesting information about each subsequent level from the backend.
+
+At **[Dwh.dev](https://dwh.dev)**, we took a different approach - dependency information is loaded to the client, allowing us to display the necessary number of levels instantly, rebuilding the graph as needed.
+
+Small graphs (with up to 500 connections) can be displayed entirely. Large graphs are available for exploration only in parts. Initially, through a search, you find the necessary object in the catalog and by clicking the "lineage" button, you enter the "group" of that object.
+
+[<img src="./dwh/media/navigation.1.png" alt="dwh.dev navigation #1"/>](./dwh/media/navigation.1.png)
+
+The main object of the group is highlighted with a dashed border.
+
+The lineage screen supports scaling, scrolling, various types of centering, and a mini-map. You can always return to the main object by clicking the first button in the button group, aligning it in the toolbar, or by the object name in the top right.
+
+To the left of the central object are **Upstream** objects; to the right, **Downstream** objects. **Upstream** objects may have violet circles on the right side of the object. The numbers in these circles indicate the number of objects in **Downstream** that do not belong to the current group. Similarly, there is a green circle on the left of **Downstream** objects, indicating the number of objects from **Upstream** outside of this group.
+
+To enter a group of any of the objects on the screen, double-click on it. To go back, press ESC.
+
+By default, 2 levels of lineage are displayed. You can change this value in the settings panel under Stream Options:
+
+[<img src="./dwh/media/navigation.2.png" alt="dwh.dev navigation #2"/>](./dwh/media/navigation.2.png)
+
+You can also quickly disable the display of all Upstream/Downstream levels in the toolbar with the **"Toggle stream length to 0"** buttons.
+
+If you want to explore the graph in a "classic" mode, navigating through its levels by "expanding" them, there is a **"Custom Path"** mode for this purpose:
+
+[<img src="./dwh/media/custom-path.1.png" alt="dwh.dev navigation #3 - custom path #1"/>](./dwh/media/custom-path.1.png)
+
+The labels on the edges of the graph show how many levels are hidden in this branch, the number of objects in the first level, and the total number of objects.
+
+You can highlight only the objects that interest you at the moment:
+
+[<img src="./dwh/media/custom-path.2.png" alt="dwh.dev navigation #3 - custom path #2"/>](./dwh/media/custom-path.2.png)
+
+When working with complex graphs, even in **"Custom Path"** mode, it can be challenging to orient oneself. Therefore, you can "straighten" the selected path using the **"Straighten the path"** button in the toolbar:
+
+[<img src="./dwh/media/custom-path.3.png" alt="dwh.dev navigation #3 - custom path #3"/>](./dwh/media/custom-path.3.png)
+
+Both of these modes also work at the column level:
+
+[<img src="./dwh/media/c2c.1.png" alt="dwh.dev navigation #3 - c2c #1"/>](./dwh/media/c2c.1.png)
+
+[<img src="./dwh/media/c2c.2.png" alt="dwh.dev navigation #3 - c2c #2"/>](./dwh/media/c2c.2.png)
