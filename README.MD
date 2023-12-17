@@ -22,7 +22,7 @@ The repository will be updated, stay tuned!
 
 ## Snowflake SQL Syntax and Behavior
 - [Identifiers](#identifiers)
-- [Default and Virtaul Columns](#default-and-virtaul-columns)
+- [Default and Virtual Columns](#default-and-virtual-columns)
 
 ## Dwh.dev Features
 - [Navigation](#navigation)
@@ -102,7 +102,7 @@ Here is the **[Dwh.dev](https://dwh.dev)** result:
 [<img src="./snowflake/1.identifiers/media/1.identifiers.2.jpg" alt="dwh.dev identifiers #2" height=400/>](./snowflake/1.identifiers/media/1.identifiers.2.jpg)
 
 
-## Default and Virtaul Columns
+## Default and Virtual Columns
 **Default and Virtual Columns** also contain information about data lineage. And as usual, nobody pays attention to it :)
 
 ```sql
@@ -142,6 +142,7 @@ CREATE VIEW v2 AS
 At **[Dwh.dev](https://dwh.dev)**, we display it like this:
 [<img src="./dwh/media/default-virtual.2.png" alt="dwh.dev virtual columns"/>](./dwh/media/default-virtual.2.png)
 
+Source is [in 2.default-and-virtual-columns.sql](./snowflake/1.identifiers/sql/2.default-and-virtual-columns.sql)
 
 # Dwh.dev Features
 ## Navigation
