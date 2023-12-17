@@ -30,7 +30,7 @@ The repository will be updated, stay tuned!
 ## Dwh.dev Features
 - [Navigation](#navigation)
 - [Join and Where](#join-and-where)
-- Strong and Weak sources
+- [Strong and Weak dependencies](#strong-and-weak-dependencies)
 - Fancy SQL Highlight
 - Argument forwarding
 
@@ -225,3 +225,36 @@ Usually, data lineage tools won't provide information about columns **t1.id, t1.
 
 [<img src="./dwh/media/jw.2.png" alt="dwh.dev join and where #2"/>](./dwh/media/jw.2.png)
 
+## Strong and Weak dependencies
+In the previous section, we talked about displaying columns that are used in JOIN and WHERE clauses.
+But we wanted to go further :)
+
+Even if columns are data sources, it makes sense to divide them into 2 categories: columns that are direct data sources and columns that only influence them.
+
+For example:
+```sql
+SELECT
+  ROUND(a, b)
+FROM t
+```
+
+Here, column A is a direct data source, while B is not. B influences the result, but A is the primary source.
+
+Another example:
+```sql
+SELECT
+  CASE
+    WHEN A IS NULL
+      THEN B
+    ELSE C 
+  END
+FROM t
+```
+Here, the value from A doesn't appear in the result but affects it.
+
+At **[Dwh.dev](https://dwh.dev)**, we divided such dependencies into classes: **STRONG** and **WEAK**. We annotated all core functions to determine which argument belongs to which class. We also analyze CASE WHEN and other cases.
+You can disable any of these classes in the settings panel:
+
+[<img src="./dwh/media/strong-weak.png" alt="dwh.dev strong and weak sources"/>](./dwh/media/strong-weak.png)
+
+Source is [in 3.strong-and-weak-sources.sql](./snowflake/1.identifiers/sql/3.strong-and-weak-sources.sql)
