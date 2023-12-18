@@ -1,6 +1,6 @@
 -- https://docs.snowflake.com/en/sql-reference/identifiers-syntax
 
-CREATE DATABASE DWHDEMO_DB;
+CREATE OR REPLACE DATABASE DWHDEMO_DB01;
 
 CREATE TABLE My$identifier (
   f1 INT

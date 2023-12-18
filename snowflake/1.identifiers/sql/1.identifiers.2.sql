@@ -1,10 +1,10 @@
-SET db_var = 'DEMO_DB';
-SET schema_var = 'DEMO_DB.SCH1';
+SET db_var = 'DWHDEMO_DB01_1';
+SET schema_var = 'DWHDEMO_DB01_1.SCH1';
 SET table_var1 = 'T1';
 SET table_var2 = 'public.t3';
 SET tablefunction = 'tblfn';
 
-CREATE DATABASE identifier($db_var);
+CREATE OR REPLACE DATABASE identifier($db_var);
 CREATE SCHEMA identifier($schema_var);
 
 CREATE TABLE identifier($table_var1) (
@@ -35,9 +35,9 @@ CREATE VIEW V1 AS
 ;
 
 CREATE VIEW V2 AS
-  SELECT identifier($table_var1).*, identifier($table_var2).* 
+  SELECT identifier($table_var1).*
   FROM
-    identifier($table_var1), identifier($table_var2)
+    identifier($table_var1)
 ;
 
 CREATE VIEW V3 AS
@@ -48,9 +48,9 @@ CREATE VIEW V3 AS
 
 -- Column Identifier
 CREATE VIEW V4 AS
-  SELECT identifier('DEMO_DB.SCH1.T1.V1'):json_prop as prop 
+  SELECT identifier('DWHDEMO_DB01_1.SCH1.T1.V1'):json_prop as prop 
   FROM 
-    DEMO_DB.SCH1.T1
+    DWHDEMO_DB01_1.SCH1.T1
 ;
 
 CREATE VIEW V5 AS
@@ -71,12 +71,12 @@ CREATE VIEW V6 AS
 CREATE VIEW V7 AS
   SELECT *
   FROM
-    table($$DEMO_DB."SCH1"."T1"$$)
+    table($$DWHDEMO_DB01_1."SCH1"."T1"$$)
 ;
 
 -- Double-Dot Notation
 CREATE VIEW V8 AS
   SELECT * 
   FROM
-    DEMO_DB..T3
+    DWHDEMO_DB01_1..T3
 ;
