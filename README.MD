@@ -32,6 +32,7 @@ The repository will be updated, stay tuned!
 - [Join and Where](#join-and-where)
 - [Strong and Weak dependencies](#strong-and-weak-dependencies)
 - [Fancy SQL Highlight](#fancy-sql-highlight)
+- Tasks and Pipes
 - Argument forwarding
 
 # Snowflake SQL Syntax and Behavior
