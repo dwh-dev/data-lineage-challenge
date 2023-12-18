@@ -38,7 +38,7 @@ The repository will be updated, stay tuned!
 # Snowflake SQL Syntax and Behavior
 ## Identifiers
 
-### Basic Syntax
+### Basic Syntax ([youtube](https://youtu.be/RIfgdpIOA3Q))
 **Snowflake** provides an extensive toolkit for working with object and column identifiers. Let's start with the basics: identifiers with and without quotes ([documentation](https://docs.snowflake.com/en/sql-reference/identifiers-syntax))
 
 Even at this stage, we won't achieve full compatibility with the syntax of other databases. However, two nuances deserve special attention:
@@ -62,7 +62,7 @@ Here is the **[Dwh.dev](https://dwh.dev)** result:
 [<img src="./snowflake/1.identifiers/media/1.identifiers.1.jpg" alt="dwh.dev identifiers #1" height=400 />](./snowflake/1.identifiers/media/1.identifiers.1.jpg)
 
 
-### Special syntax
+### Special syntax ([youtube](https://youtu.be/quiMVewFav0))
 In addition to the basic syntax, **Snowflake** has special functionality:
 
 - [Literals and Variables as Identifiers](https://docs.snowflake.com/en/sql-reference/identifier-literal).
