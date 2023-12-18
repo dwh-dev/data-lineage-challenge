@@ -31,7 +31,7 @@ The repository will be updated, stay tuned!
 - [Navigation](#navigation)
 - [Join and Where](#join-and-where)
 - [Strong and Weak dependencies](#strong-and-weak-dependencies)
-- Fancy SQL Highlight
+- [Fancy SQL Highlight](#fancy-sql-highlight)
 - Argument forwarding
 
 # Snowflake SQL Syntax and Behavior
@@ -258,3 +258,19 @@ You can disable any of these classes in the settings panel:
 [<img src="./dwh/media/strong-weak.png" alt="dwh.dev strong and weak sources"/>](./dwh/media/strong-weak.png)
 
 Source is [in 3.strong-and-weak-sources.sql](./snowflake/1.identifiers/sql/3.strong-and-weak-sources.sql)
+
+## Fancy SQL Highlight
+The static analyzer **[Dwh.dev](https://dwh.dev)** allows having comprehensive information about all objects and columns at any point in an SQL query. This enables making SQL highlighting more convenient and functional.
+
+In detailed object information and in the DDL on the Lineage screen, you can observe SQL highlighting in this manner:
+
+[<img src="./dwh/media/highlight.1.png" alt="dwh.dev highlight #1"/>](./dwh/media/highlight.1.png)
+
+Each object has an icon corresponding to its type and is clickable. Clicking on it will take you to the selected object. We distinguish all types of Snowflake objects - TABLE, VIEW, STAGE, STREAM, FUNCTION, etc.
+
+Additionally, we've created a reference guide for core functions. Hovering over such a function in SQL, you'll see a brief description:
+
+[<img src="./dwh/media/highlight.2.png" alt="dwh.dev highlight #2"/>](./dwh/media/highlight.2.png)
+
+Clicking will expand the details and provide a link to the original documentation.
+
