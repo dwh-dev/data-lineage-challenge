@@ -168,7 +168,7 @@ To the left of the central object are **Upstream** objects; to the right, **Down
 
 To enter a group of any of the objects on the screen, double-click on it. To go back, press ESC.
 
-By default, 2 levels of lineage are displayed. You can change this value in the settings panel under Stream Options:
+By default, 2 levels of lineage are displayed. You can change this value in the settings panel under **Stream Options**:
 
 [<img src="./dwh/media/navigation.2.png" alt="dwh.dev navigation #2"/>](./dwh/media/navigation.2.png)
 
