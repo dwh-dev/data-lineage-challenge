@@ -165,6 +165,8 @@ The main object of the group is highlighted with a dashed border.
 
 The lineage screen supports scaling, scrolling, various types of centering, and a mini-map. You can always return to the main object by clicking the first button in the button group, aligning it in the toolbar, or by the object name in the top right.
 
+[<img src="./dwh/media/toolbar.png" alt="dwh.dev toolbar"/>](./dwh/media/toolbar.png)
+
 To the left of the central object are **Upstream** objects; to the right, **Downstream** objects. **Upstream** objects may have violet circles on the right side of the object. The numbers in these circles indicate the number of objects in **Downstream** that do not belong to the current group. Similarly, there is a green circle on the left of **Downstream** objects, indicating the number of objects from **Upstream** outside of this group.
 
 To enter a group of any of the objects on the screen, double-click on it. To go back, press ESC.
