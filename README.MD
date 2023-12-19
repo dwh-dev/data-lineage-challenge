@@ -12,7 +12,8 @@ Additionally, we've attached the results of **[Dwh.dev](https://dwh.dev)**'s wor
 **Feel free to send us the results from other data lineage tools using these examples. We will add them for comparison :)**
 
 Let's start with **Snowflake** because at the moment, we know this database the best. 
-In this repository, we intentionally won't cover cases with special **Snowflake** objects (PIPE, STREAM, TASK, POLICY, etc.) because the vast majority of existing DATA LINEAGE TOOLS know nothing about them and won't provide you any information (but not **[Dwh.dev](https://dwh.dev)**). 
+
+In this repository (in [Snowflake SQL Syntax and Behavior](#snowflake-sql-syntax-and-behavior) section), we intentionally won't cover cases with special **Snowflake** objects (PIPE, STREAM, TASK, POLICY, etc.) because the vast majority of existing DATA LINEAGE TOOLS know nothing about them and won't provide you any information (but not **[Dwh.dev](https://dwh.dev)**). 
 
 The focus will be on the peculiar behavior of regular objects and the relationships encapsulated within them. 
 
