@@ -65,7 +65,7 @@ Here is the **[Dwh.dev](https://dwh.dev)** result:
 [<img src="./snowflake/1.identifiers/media/1.identifiers.1.jpg" alt="dwh.dev identifiers #1" height=400 />](./snowflake/1.identifiers/media/1.identifiers.1.jpg)
 
 
-### Special syntax ([youtube](https://youtu.be/quiMVewFav0))
+### Special syntax ([youtube](https://youtu.be/hGf2VtBxzHU))
 In addition to the basic syntax, **Snowflake** has special functionality:
 
 - [Literals and Variables as Identifiers](https://docs.snowflake.com/en/sql-reference/identifier-literal).
