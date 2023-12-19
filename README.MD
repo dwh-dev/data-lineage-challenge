@@ -7,7 +7,9 @@ That's why we decided to create a collection of specific use cases for different
 
 You can execute these statements from any of the attached SQL files and check how your selected DATA LINEAGE TOOL handles such syntax. (Spoiler: not very well). 
 
-Additionally, we've attached the results of **[Dwh.dev](https://dwh.dev)**'s work so that you can make the right choice :)
+Additionally, we've attached the results of **[Dwh.dev](https://dwh.dev)**'s work so that you can make the right choice!
+
+**Feel free to send us the results from other data lineage tools using these examples. We will add them for comparison :)**
 
 Let's start with **Snowflake** because at the moment, we know this database the best. 
 In this repository, we intentionally won't cover cases with special **Snowflake** objects (PIPE, STREAM, TASK, POLICY, etc.) because the vast majority of existing DATA LINEAGE TOOLS know nothing about them and won't provide you any information (but not **[Dwh.dev](https://dwh.dev)**). 
