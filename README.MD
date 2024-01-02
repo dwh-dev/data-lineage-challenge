@@ -1,4 +1,4 @@
-# Test Your Data Lineage Tool
+# Data Lineage Challenge
 **[Dwh.dev](https://dwh.dev)** team has been dealing with SQL static analysis for a long time, and we know very well that all databases behave differently: unique SQL syntax, object types, and relationships, peculiar behavior of seemingly obvious things. 
 
 Documentation often describes not all the nuances of a database's behavior, or yet sometimes it simply doesn't match the actual state of affairs.
