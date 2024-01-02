@@ -114,6 +114,8 @@ Here is the **[Dwh.dev](https://dwh.dev)** result:
 
 
 ## Default and Virtual Columns
+[Youtube](https://youtu.be/eLi8CnXP8LA)
+
 **Default and Virtual Columns** also contain information about data lineage. And as usual, nobody pays attention to it :)
 
 ```sql
