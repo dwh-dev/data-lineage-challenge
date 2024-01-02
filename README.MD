@@ -231,7 +231,7 @@ Usually, data lineage tools won't provide information about columns **t1.id, t1.
 
 [<img src="./dwh/media/jw.2.png" alt="dwh.dev join and where #2"/>](./dwh/media/jw.2.png)
 
-## Strong and Weak dependencies
+## Strong and Weak dependencies ([youtube](https://youtu.be/jQeVVlqxjj8))
 In the previous section, we talked about displaying columns that are used in JOIN and WHERE clauses.
 But we wanted to go further :)
 
