@@ -13,15 +13,17 @@ Additionally, we've attached the results of **[Dwh.dev](https://dwh.dev)**'s wor
 
 Let's start with **Snowflake** because at the moment, we know this database the best. 
 
-In this repository (in [Snowflake SQL Syntax and Behavior](#snowflake-sql-syntax-and-behavior) section), we intentionally won't cover cases with special **Snowflake** objects (PIPE, STREAM, TASK, POLICY, etc.) because the vast majority of existing DATA LINEAGE TOOLS know nothing about them and won't provide you any information (but not **[Dwh.dev](https://dwh.dev)**). 
+In this repository (in [Snowflake SQL Syntax and Behavior](#snowflake-sql-syntax-and-behavior) section), we intentionally won't cover cases with special **Snowflake** objects (PIPE, STREAM, TASK, POLICY, etc.) because the vast majority of existing **DATA LINEAGE TOOLS** know nothing about them and won't provide you any information (but not **[Dwh.dev](https://dwh.dev)**). 
 
 The focus will be on the peculiar behavior of regular objects and the relationships encapsulated within them. 
 
 Some of the **Snowflake** syntax exists for compatibility with other databases.
 
-We'll also tell you about the functionality of **[Dwh.dev](https://dwh.dev)**, which, in our opinion, should exist in all DATA LINEAGE TOOLS, but unfortunately doesn't exist yet...
+We'll also tell you about the functionality of **[Dwh.dev](https://dwh.dev)**, which, in our opinion, should exist in all **DATA LINEAGE TOOLS**, but unfortunately doesn't exist yet...
 
 The repository will be updated, stay tuned!
+
+PS: Also **[Dwh.dev](https://dwh.dev)** provides an API for SQL parsing and compilation. [Contact us](mailto:oem@dwh.dev) to get demo access. We cooperate with different data companies (even our competitors)
 
 ## Snowflake SQL Syntax and Behavior
 - [Identifiers](#identifiers)
