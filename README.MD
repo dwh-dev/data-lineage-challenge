@@ -28,9 +28,14 @@ PS: Also **[Dwh.dev](https://dwh.dev)** provides an API for SQL parsing and comp
 ## Snowflake SQL Syntax and Behavior
 - [Identifiers](#identifiers)
 - [Default and Virtual Columns](#default-and-virtual-columns)
+- [Reusing column aliases](#reusing-column-aliases)
+- SELECT \* EXCLUDE RENAME ILIKE
 - Scalar Functions from PUBLIC schema
-- CTE name equals existing object
 - Function overloading
+- Objects auto renaming
+- Columns auto renaming
+- CTE name equals existing object
+- CTE as an expression alias
 
 ## Dwh.dev Features
 - [Navigation](#navigation)
@@ -39,6 +44,7 @@ PS: Also **[Dwh.dev](https://dwh.dev)** provides an API for SQL parsing and comp
 - [Fancy SQL Highlight](#fancy-sql-highlight)
 - Tasks and Pipes
 - Argument forwarding
+- Circle dependencies
 
 # Snowflake SQL Syntax and Behavior
 ## Identifiers
@@ -135,7 +141,7 @@ If during data transformations, only the id1 column is inserted into the **T1** 
 
 At **[Dwh.dev](https://dwh.dev)**, we display it like this:
 
-[<img src="./dwh/media/default-virtual.1.png" alt="dwh.dev default columns"/>](./dwh/media/default-virtual.1.png)
+[<img src="./snowflake/2.default-and-virtual-columns/media/default-virtual.1.png" alt="dwh.dev default columns"/>](./snowflake/2.default-and-virtual-columns/media/default-virtual.1.png)
 
 With **Virtual columns**, an even more precarious situation arises. It's impossible to insert data into a virtual column, and they will ALWAYS depend on other columns in the table.
 ```sql
@@ -153,13 +159,89 @@ CREATE VIEW v2 AS
 ;
 ```
 At **[Dwh.dev](https://dwh.dev)**, we display it like this:
-[<img src="./dwh/media/default-virtual.2.png" alt="dwh.dev virtual columns"/>](./dwh/media/default-virtual.2.png)
+[<img src="./snowflake/2.default-and-virtual-columns/media/default-virtual.2.png" alt="dwh.dev virtual columns"/>](./snowflake/2.default-and-virtual-columns/media/default-virtual.2.png)
 
-Source is [in 2.default-and-virtual-columns.sql](./snowflake/1.identifiers/sql/2.default-and-virtual-columns.sql)
+Source is [in 2.default-and-virtual-columns.1.sql](./snowflake/2.default-and-virtual-columns/sql/2.default-and-virtual-columns.1.sql)
+
+## Reusing column aliases
+
+In any database, you can use aliases for both columns and expressions within queries:
+
+```sql
+SELECT
+    id AS user_id,
+    name AS user_name,
+    age AS user_age,
+    age * 2 AS user_age_doubled
+FROM users;
+```
+
+But what can we do with these aliases?
+Database vendors allow different things. For example, in MySQL and PostgreSQL, aliases can only be used in **GROUP BY** and **ORDER BY**.
+In Clickhouse and **Snowflake**, however, aliases can be used everywhere. But, as usual, there are nuances :)
+
+Let's create syntactically identical VIEWs:
+
+```sql
+CREATE TABLE abc AS SELECT 1 AS a, 100 AS b, 1000 AS c;
+
+CREATE VIEW v13 AS 
+SELECT 
+    a+1 AS b,
+    b+1 AS c
+FROM abc;
+
+CREATE VIEW v14 AS 
+SELECT 
+    a+1 AS d,
+    d+1 AS e
+FROM abc;
+```
+At first glance, the lineage for these views should be the same. But let's see what happened:
+[<img src="./snowflake/3.reusing-column-aliases/media/3.reusing-column-aliases.1.png" alt="dwh.dev reusing column aliases"/>](./snowflake/3.reusing-column-aliases/media/3.reusing-column-aliases.1.png)
+
+Why in **V13** the column **C** did not reuse the alias **B**? Because in **Snowflake**, when using an alias equivalent to the original column name from the source, the original column takes precedence!
+
+By the way, in Clickhouse, it works differently...
+
+What was meant by saying that aliases work everywhere?
+
+Aliases can be reused in JOIN and WHERE clauses:
+```sql
+CREATE TABLE t12 AS SELECT 1 AS a, 100 AS b;
+CREATE TABLE t13 AS SELECT 1 AS c, 100 AS d;
+
+CREATE VIEW v15 AS
+SELECT 
+ a + b AS e,
+ c + d AS f
+FROM 
+  t12 
+  JOIN t13 ON e = f;
+```
+
+or even like this:
+```sql
+CREATE VIEW v16 AS
+SELECT 
+  a1 + b1 AS e,
+  c1 + d1 AS f,
+  ROUND(e, f) AS g,
+  ROUND(f, e) AS h 
+FROM 
+  t12 AS t121(a1, b1) 
+  JOIN t13 AS t131(c1, d1) ON e = f
+WHERE 
+  g = h;
+```
+Since in **[Dwh.dev](https://dwh.dev)** we display not only the data flows but also [the columns used in JOIN and WHERE](#join-and-where), you will also see the original column sources in the corresponding section.
+
+Source is [in 3.reusing-column-aliases.1.sql](./snowflake/3.reusing-column-aliases/sql/3.reusing-column-aliases.1.sql)
+
 
 # Dwh.dev Features
 ## Navigation
-
+[Youtube](https://youtu.be/BS0XvzyTnwA)
 The commonly accepted navigation standard for Lineage is "expanding" each subsequent level on demand. This involves requesting information about each subsequent level from the backend.
 
 At **[Dwh.dev](https://dwh.dev)**, we took a different approach - dependency information is loaded to the client, allowing us to display the necessary number of levels instantly, rebuilding the graph as needed.
@@ -269,7 +351,7 @@ You can disable any of these classes in the settings panel:
 
 [<img src="./dwh/media/strong-weak.png" alt="dwh.dev strong and weak sources"/>](./dwh/media/strong-weak.png)
 
-Source is [in 3.strong-and-weak-sources.sql](./snowflake/1.identifiers/sql/3.strong-and-weak-sources.sql)
+Source is [in 3.strong-and-weak-sources.sql](./dwh/sql/dwhdev-features.strong-and-weak-sources.sql)
 
 ## Fancy SQL Highlight
 The static analyzer **[Dwh.dev](https://dwh.dev)** allows having comprehensive information about all objects and columns at any point in an SQL query. This enables making SQL highlighting more convenient and functional.
