@@ -29,7 +29,7 @@ PS: Also **[Dwh.dev](https://dwh.dev)** provides an API for SQL parsing and comp
 - [Identifiers](#identifiers)
 - [Default and Virtual Columns](#default-and-virtual-columns)
 - [Reusing column aliases](#reusing-column-aliases)
-- SELECT \* EXCLUDE RENAME ILIKE
+- [SELECT \* ILIKE EXCLUDE REPLACE RENAME](#select-ilike-exclude-replace-rename)
 - Scalar Functions from PUBLIC schema
 - Function overloading
 - Objects auto renaming
@@ -237,6 +237,49 @@ WHERE
 Since in **[Dwh.dev](https://dwh.dev)** we display not only the data flows but also [the columns used in JOIN and WHERE](#join-and-where), you will also see the original column sources in the corresponding section.
 
 Source is [in 3.reusing-column-aliases.1.sql](./snowflake/3.reusing-column-aliases/sql/3.reusing-column-aliases.1.sql)
+
+## SELECT ILIKE EXCLUDE REPLACE RENAME
+Database vendors are competing to see who can come up with the most features for **SELECT \***.
+**Snowflake** is not lagging behind and supports as many as 4 modifiers for **SELECT \***:  
+**ILIKE EXCLUDE REPLACE RENAME**
+
+We all know that **SELECT \*** is bad. Now it's 4 times worse :)  
+Ok, 3. You can't use them all together (either **ILIKE** or **EXCLUDE**).
+
+But the most disgusting modifier is **REPLACE**. It allows you to replace one column with any expression. Good luck debugging, dudes :)
+
+What happens to lineage when using these modifiers? 
+A few examples are collected here:
+[in 4.select-ilike-exclude-replace-rename.1.sql](./snowflake/4.select-ilike-exclude-replace-rename/sql/4.select-ilike-exclude-replace-rename.1.sql)
+
+Take a look at one of them:
+```sql
+CREATE TABLE t19(
+  id INT,
+  c1 BOOLEAN, 
+  c2 BOOLEAN,
+  c3 BOOLEAN,
+  c4 BOOLEAN,
+  c12c BOOLEAN
+);
+CREATE TABLE t20(
+  c5 BOOLEAN, 
+  c6 BOOLEAN
+);
+
+CREATE VIEW v20 AS
+  SELECT
+    * 
+      ILIKE 'c%'
+      REPLACE (a.c1 OR b.$2 AS c1)
+      RENAME c1 AS c0
+  FROM t19 a, t20 b
+;
+```
+
+At **[Dwh.dev](https://dwh.dev)**, we display it like this:
+[<img src="./snowflake/4.select-ilike-exclude-replace-rename/media/4.select-ilike-exclude-replace-rename.1.png" alt="dwh.dev SELECT * ILIKE EXCLUDE REPLACE RENAME"/>](./snowflake/4.select-ilike-exclude-replace-rename/media/4.select-ilike-exclude-replace-rename.1.png)
+
 
 
 # Dwh.dev Features
