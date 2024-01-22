@@ -38,6 +38,7 @@ PS: Also **[Dwh.dev](https://dwh.dev)** provides an API for SQL parsing and comp
 - CTE as an expression alias
 
 ## Dwh.dev Features
+- [Offline mode](#offline-mode)
 - [Navigation](#navigation)
 - [Join and Where](#join-and-where)
 - [Strong and Weak dependencies](#strong-and-weak-dependencies)
@@ -283,13 +284,48 @@ At **[Dwh.dev](https://dwh.dev)**, we display it like this:
 
 
 # Dwh.dev Features
+## Offline mode
+
+**[Dwh.dev](https://dwh.dev)** allows you to work without a direct connection to your **Snowflake** instance.
+
+Typically, data lineage tools require information from the **INFORMATION_SCHEMA**, which is only accessible through a direct connection to your account.
+
+However, we independently compile the schema into an intermediate representation, requiring only the file with DDL-statements. This opens up several possibilities:
+- You can explore the lineage of only the part of the database that is available to you, without going through all the security procedures adopted in your company when creating a user for a direct connection.
+- You can explore the lineage of a database to which you do not have access, but there is a schema description.
+- You can upload schema descriptions for multiple databases at once.
+
+To use offline mode, execute the following SQL query in your account:
+
+```sql
+SELECT GET_DDL('database', '<dbname>', TRUE);
+```
+
+and upload the result to **[Dwh.dev](https://dwh.dev)**.
+
+However, this approach has some downsides:
+
+1) Not all objects of interest can be obtained with this command, and some objects are returned incorrectly. For example, if a **STREAM** is created for an object from another schema, **GET_DDL** will return an error description. We recommend enriching the results of the **GET_DDL** function with additional functions from our collection: [https://github.com/dwh-dev/snowflake-get-ddl-tools](https://github.com/dwh-dev/snowflake-get-ddl-tools)
+
+2) The commands in the results of the **GET_DDL** function are sorted in alphabetical order of object names. For example, if **VIEW v1** depends on **VIEW v2**, you won't be able to run the resulting set of statements without errors. 
+**The good news** is that we can topologically sort DDL statements before compilation. When uploading the file, specify that you are uploading the result of the **GET_DDL** function, and we will take care of the rest :)
+
+You can also upload files with sets of DML and DDL statements describing your **PIPELINES**. You can retrieve them from **QUERY_HISTORY** if you do not store them separately.
+
+If you have sets of SELECT statements describing **BI REPORTS**, you can also upload them yourself.
+
+We will also include information about relationships and objects from these files in the overall lineage and catalog.
+
 ## Navigation
 [Youtube](https://youtu.be/BS0XvzyTnwA)
+
 The commonly accepted navigation standard for Lineage is "expanding" each subsequent level on demand. This involves requesting information about each subsequent level from the backend.
 
 At **[Dwh.dev](https://dwh.dev)**, we took a different approach - dependency information is loaded to the client, allowing us to display the necessary number of levels instantly, rebuilding the graph as needed.
 
-Small graphs (with up to 500 connections) can be displayed entirely. Large graphs are available for exploration only in parts. Initially, through a search, you find the necessary object in the catalog and by clicking the "lineage" button, you enter the "group" of that object.
+For user's convenience, small graphs (with up to 500 connections) can be displayed entirely. Large graphs are available for exploration only in parts, because navigating large graphs is almost impossible.
+
+Initially, through a search, you find the necessary object in the catalog and by clicking the "lineage" button, you enter the "group" of that object.
 
 [<img src="./dwh/media/navigation.1.png" alt="dwh.dev navigation #1"/>](./dwh/media/navigation.1.png)
 
