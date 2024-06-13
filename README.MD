@@ -362,7 +362,7 @@ Oops… i.e. if there is a scalar function in the scheme where **VIEW** is creat
 
 **I.e. if you didn't specify a schema for a scalar function from the PUBLIC schema while creating a VIEW, in a schema other than PUBLIC, then to corrupt the data in your database it is enough to create a function with the same name in the corresponding schema…**
 
-At **[Dwh.dev](https://dwh.dev)**, We don't display lineage for scalar functions, but if you click on that function in the source code ([which we display in a very cool way](#fancy-sql-highlight)), you will jump to the exact function used in that context.
+At **[Dwh.dev](https://dwh.dev)**, we don't display downstream lineage for scalar functions right now, but if you click on that function in the source code ([which we display in a very cool way](#fancy-sql-highlight)), you will jump to the exact function used in that context.
 
 Source is [in 5.scalar-functions-name-resolution-special-behavior.1.sql](./snowflake/5.scalar-functions-name-resolution-special-behavior/sql/5.scalar-functions-name-resolution-special-behavior.1.sql)
 
