@@ -31,7 +31,8 @@ PS: Also **[Dwh.dev](https://dwh.dev)** provides an API for SQL parsing and comp
 - [Reusing column aliases](#reusing-column-aliases)
 - [SELECT \* ILIKE EXCLUDE REPLACE RENAME](#select-ilike-exclude-replace-rename)
 - [Scalar functions name resolution special behavior](#scalar-functions-name-resolution-special-behavior)
-- Function overloading
+- [Functions overloading](#functions-overloading)
+- UDF named arguments
 - Objects auto renaming
 - Columns auto renaming
 - CTE name equals existing object
@@ -44,6 +45,7 @@ PS: Also **[Dwh.dev](https://dwh.dev)** provides an API for SQL parsing and comp
 - [Strong and Weak dependencies](#strong-and-weak-dependencies)
 - [Fancy SQL Highlight](#fancy-sql-highlight)
 - Tasks and Pipes
+- Implicit Types casting ("Coercion")
 - Argument forwarding
 - Circle dependencies
 
@@ -365,6 +367,43 @@ Oops… i.e. if there is a scalar function in the scheme where **VIEW** is creat
 At **[Dwh.dev](https://dwh.dev)**, we don't display downstream lineage for scalar functions right now, but if you click on that function in the source code ([which we display in a very cool way](#fancy-sql-highlight)), you will jump to the exact function used in that context.
 
 Source is [in 5.scalar-functions-name-resolution-special-behavior.1.sql](./snowflake/5.scalar-functions-name-resolution-special-behavior/sql/5.scalar-functions-name-resolution-special-behavior.1.sql)
+
+
+## Functions overloading
+Snowflake support [procedures and functions overloading](https://docs.snowflake.com/en/developer-guide/udf-stored-procedure-naming-conventions#overloading-procedures-and-functions). You can create multiple UDFs with the same name but with different types of arguments..
+
+Let's create:
+```sql
+CREATE TABLE A(ID INT);
+CREATE TABLE B(S STRING);
+
+CREATE OR REPLACE FUNCTION fn_override ( _id number )
+  RETURNS TABLE (id int)
+  AS 'select id from a where id > _id'
+;
+
+
+CREATE OR REPLACE FUNCTION fn_override ( _s string )
+  RETURNS TABLE (s string)
+  AS 'select s from b where s != _s'
+;
+```
+
+The first one has **Table A as a source**, and the second one **Table B**.
+
+Now let's create VIEWs depending on these functions:
+```sql
+CREATE VIEW V1 AS
+SELECT * FROM TABLE(fn_override(1));
+
+CREATE VIEW V2 AS
+SELECT * FROM TABLE(fn_override('1'));
+```
+
+Here is the **[Dwh.dev](https://dwh.dev)** result:
+[<img src="./snowflake/6.functions-overloading/media/6.functions-overloading.1.png" alt="dwh.dev functions overloading"/>](./snowflake/6.functions-overloading/media/6.functions-overloading.1.png)
+
+Source is [in 6.functions-overloading.1.sql](./snowflake/6.functions-overloading/sql/6.functions-overloading.1.sql)
 
   
 # Dwh.dev Features
