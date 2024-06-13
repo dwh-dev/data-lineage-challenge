@@ -30,7 +30,7 @@ PS: Also **[Dwh.dev](https://dwh.dev)** provides an API for SQL parsing and comp
 - [Default and Virtual Columns](#default-and-virtual-columns)
 - [Reusing column aliases](#reusing-column-aliases)
 - [SELECT \* ILIKE EXCLUDE REPLACE RENAME](#select-ilike-exclude-replace-rename)
-- Scalar Functions from PUBLIC schema
+- [Scalar functions name resolution special behavior](#scalar-functions-name-resolution-special-behavior)
 - Function overloading
 - Objects auto renaming
 - Columns auto renaming
@@ -281,8 +281,92 @@ CREATE VIEW v20 AS
 At **[Dwh.dev](https://dwh.dev)**, we display it like this:
 [<img src="./snowflake/4.select-ilike-exclude-replace-rename/media/4.select-ilike-exclude-replace-rename.1.png" alt="dwh.dev SELECT * ILIKE EXCLUDE REPLACE RENAME"/>](./snowflake/4.select-ilike-exclude-replace-rename/media/4.select-ilike-exclude-replace-rename.1.png)
 
+## Scalar functions name resolution special behavior
 
+This topic is about the behavior of name resolution in Snowflake inside **CREATE VIEW**.
 
+When you execute queries, Snowflake looks for the objects specified in the query in the schemas specified in **SEARCH_PATH**. You can view them like this:
+```sql
+select current_schemas();
+```
+
+But it seems like a good idea to make the creation of VIEWs independent of **SEARCH_PATH**. Otherwise, we will get different results when we work with VIEWs at different **SEARCH_PATH**.
+
+The documentation says the following:
+
+> The **SEARCH_PATH** is not used inside views or UDFs. All unqualifed objects in a view or UDF definition will be resolved in the view’s or UDF’s schema only.
+
+That's great! And it works!
+
+```sql
+CREATE OR REPLACE DATABASE db1;
+CREATE SCHEMA sh1;
+
+CREATE TABLE public.t1(c1 int);
+
+CREATE VIEW sh1.v1 AS
+SELECT * FROM t1;
+```
+will return
+
+```
+SQL compilation error:
+Object 'DB1.SH1.T1' does not exist or not authorized.
+```
+And not only for tables. For any objects, except … **scalar functions**!
+
+```sql
+CREATE OR REPLACE DATABASE db1;
+CREATE SCHEMA sh1;
+
+CREATE TABLE sh1.t1(c1 int);
+INSERT INTO sh1.t1(c1) VALUES (1);
+
+CREATE FUNCTION public.test()
+RETURNS NUMBER
+LANGUAGE SQL
+AS '1';
+
+CREATE VIEW sh1.v1 AS
+SELECT *, test() c2 FROM t1;
+
+select * from sh1.v1;
+```
+will return
+
+```
+C1  C2
+1   1
+```
+Strange behavior, don't you agree?
+
+In PostgreSQL, for example, it works like this: when creating a VIEW, all objects without schema specification are searched in the public schema. If you want a different schema, specify it by hand.
+
+But maybe I'm being picky? Let's add one more thing…
+
+```sql
+CREATE FUNCTION sh1.test()
+RETURNS NUMBER
+LANGUAGE SQL
+AS '2';
+
+select * from sh1.v1;
+```
+will return
+
+```
+C1  C2
+1   2
+```
+Oops… i.e. if there is a scalar function in the scheme where **VIEW** is created, it will be used. If not, the function from **PUBLIC** will be used.
+
+**I.e. if you didn't specify a schema for a scalar function from the PUBLIC schema while creating a VIEW, in a schema other than PUBLIC, then to corrupt the data in your database it is enough to create a function with the same name in the corresponding schema…**
+
+At **[Dwh.dev](https://dwh.dev)**, We don't display lineage for scalar functions, but if you click on that function in the source code ([which we display in a very cool way](#fancy-sql-highlight)), you will jump to the exact function used in that context.
+
+Source is [in 5.scalar-functions-name-resolution-special-behavior.1.sql](./snowflake/5.scalar-functions-name-resolution-special-behavior/sql/5.scalar-functions-name-resolution-special-behavior.1.sql)
+
+  
 # Dwh.dev Features
 ## Offline mode
 
